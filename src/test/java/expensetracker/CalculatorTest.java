@@ -1,7 +1,9 @@
-package exampleproject;
+package expensetracker;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+
+import expencetracker.Calculator;
 
 public class CalculatorTest {
     @Test

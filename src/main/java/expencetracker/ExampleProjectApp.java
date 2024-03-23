@@ -1,4 +1,4 @@
-package exampleproject;
+package expencetracker;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

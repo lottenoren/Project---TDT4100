@@ -1,4 +1,4 @@
-package exampleproject;
+package expencetracker;
 
 public class Calculator {
     private String operator;
