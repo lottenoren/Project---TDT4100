@@ -1,0 +1,49 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Student",
+            "request": "launch",
+            "mainClass": "TDT4100_project/Project.Student",
+            "projectName": "tdt4100_v2024_prosjekt_boilerplate"
+        },
+        {
+            "type": "java",
+            "name": "ExampleProjectApp",
+            "request": "launch",
+            "mainClass": "TDT4100_project/expencetracker.ExampleProjectApp",
+            "projectName": "tdt4100_v2024_prosjekt_boilerplate"
+        },
+        {
+            "type": "java",
+            "name": "Expense",
+            "request": "launch",
+            "mainClass": "TDT4100_project/expencetracker.Expense",
+            "projectName": "tdt4100_v2024_prosjekt_boilerplate"
+        },
+        {
+            "type": "java",
+            "name": "ExpenseManager",
+            "request": "launch",
+            "mainClass": "TDT4100_project/expencetracker.ExpenseManager",
+            "projectName": "tdt4100_v2024_prosjekt_boilerplate"
+        },
+        {
+            "type": "java",
+            "name": "CSVEExpenseStorage",
+            "request": "launch",
+            "mainClass": "TDT4100_project/expencetracker.storage.CSVEExpenseStorage",
+            "projectName": "tdt4100_v2024_prosjekt_boilerplate"
+        }
+    ]
+}

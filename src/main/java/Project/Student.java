@@ -7,22 +7,31 @@ import java.util.Scanner;
 
 public class Student {
     private String studentName; 
-    //private List<String> studentNameList = new ArrayList<>();
+    private static HashMap<String, String> gradeCalculator;
     
 
 
-    public Student(String firstName, String lastName){
-        //studentNameList = new ArrayList<>();
+    public Student(String firstName, String lastName, HashMap<String, String> gradeCalculator){
         this.studentName = firstName + " " + lastName; 
+        Student.gradeCalculator = gradeCalculator;
 
     }
 
-    public void addGrade(String subjectCode, String grade, HashMap<String, String> gradeCalculator){
+    public void addGrade(String subjectCode, char grade /*HashMap<String, String> gradeCalculator*/){
+        //validerer først emnekoden
+
+        Subject subject = new Subject(subjectCode, gradeCalculator);
+        subject.validateSubjectCode(subjectCode);
+
+        //validerer grade
+        subject.validGrade(grade);
+
+        //kontrollerer om student har lagt inn karakter til dette emnet tidligere. 
         String key = studentName + "-" + subjectCode;
         if(gradeCalculator.containsKey(key)){
             System.out.println("Student have already added grade.");
         } else {
-            gradeCalculator.put(key, grade);
+            gradeCalculator.put(key, String.valueOf(grade));
             System.out.println("Grade added for" + studentName + "in subject" + subjectCode);
             
         }
@@ -44,12 +53,6 @@ public class Student {
         if(!name[0].matches("^[ÆØÅæøåa-zA-Z]") || !name[1].matches("^[ÆØÅæøåa-zA-Z]")){
             throw new IllegalArgumentException("Studentname can only contains letters.");
         } 
-        
-        /*if(studentNameList.contains(studentName)){
-            throw new IllegalArgumentException("You have alredy added your grade in this subject.");
-        } else{
-            studentNameList.add(studentName);
-        }*/
     } 
 
     public String getStudenName(){
@@ -57,27 +60,32 @@ public class Student {
     }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in); 
+        Scanner scanner = new Scanner(System.in);  
 
 
         System.out.println("Velkommen til karakterkalkulatoren");
         System.out.println("Venligst skriv inn fornavn og etternavn:"); //samt emnekoden? 
 
-        //emnekode?
         System.out.println("Fornavn;");
-        String firstName = scanner.next();
+        String firstName = scanner.nextLine();
         System.out.println("Etternavn;");
-        String lastName = scanner.next(); 
+        String lastName = scanner.nextLine(); 
+
+        //oppretter en student med det innskrevne navnet; 
+        Student studentName = new Student(firstName, lastName, gradeCalculator);
+        studentName.setStudentName(firstName + " " + lastName);
+
+        System.out.println("Skriv emnekode og karakter:");
 
         System.out.println("Emnekode;");
         String subjectCode = scanner.next();
-
         System.out.println("Karakter;");
-        String grade = scanner.next();
-
-        //oppretter en student med det innskrevne navnet; 
-        Student studentName = new Student(firstName, lastName);
-        studentName.setStudentName(firstName + " " + lastName);
+        char grade = scanner.next().charAt(0); //gjør at bokstaven blir til en char
+        studentName.addGrade(subjectCode, grade);
+        
+        //Input felt for bruker for å velge emnekode
+        System.out.println("Skriv inn emnekode for å se gjennomsnitt, median og strykprosent:");
+        String selectedSubject = scanner.next();
 
         scanner.close();
 
