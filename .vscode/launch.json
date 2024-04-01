@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CalculatorProjectApp",
+            "request": "launch",
+            "mainClass": "TDT4100_project/Project.CalculatorProjectApp",
+            "projectName": "tdt4100_v2024_prosjekt_boilerplate"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
