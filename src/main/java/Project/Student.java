@@ -1,7 +1,7 @@
 package Project;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+//import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 //import java.util.Scanner;
@@ -11,13 +11,13 @@ import java.util.Map;
 public class Student {
     private String studentName; 
     //private static HashMap<String, String> gradeMap;
-    private static Map<String, List<String>> gradeMap;
+    private Map<String, List<String>> gradeMap;
     
 
 
-    public Student(String firstName, String lastName, HashMap<String, List<String>> gradeMap){
+    public Student(String firstName, String lastName, Map<String, List<String>> gradeMap){
         this.studentName = firstName + " " + lastName; 
-        Student.gradeMap = gradeMap;
+        this.gradeMap = gradeMap;
 
     }
 
@@ -40,7 +40,7 @@ public class Student {
             List<String> gradesList = new ArrayList<>(); // Opprett en ny liste
             gradesList.add(String.valueOf(grade)); // Legg til enkeltkarakteren i den nye listen
             gradeMap.put(key, gradesList); // Legg til den nye listen i gradeMap
-            System.out.println("Grade added for " + studentName + " in subject " + subjectCode);
+            System.out.println("Grade added for " + studentName + " in subject " + subjectCode + ": " + gradeMap);
         }
     }
 

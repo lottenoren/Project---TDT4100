@@ -32,7 +32,9 @@ public class CalculatorProjectController {
 
 
     private Student student;
-    private Map<String, List<String>> gradeMap;
+    //private Map<String, List<String>> gradeMap;
+    private Map<String, List<String>> gradeMap = new HashMap<>();
+
 
     /*@FXML 
     public void initialize(){
@@ -49,13 +51,18 @@ public class CalculatorProjectController {
             String selectedSubject = selectedSubjectField.getText();
 
 
-            student = new Student(firstName, lastName, new HashMap<String, List<String>>());
-            student.setStudentName(firstName + " " + lastName);
+            student = new Student(firstName, lastName, gradeMap);
+            //student.setStudentName(firstName + " " + lastName);
             student.addGrade(subjectCode, grade);
             
             Subject subject = new Subject(subjectCode, gradeMap);
-            List<String> gradesForSubject = subject.getGradesForSubject(selectedSubject,new HashMap<>(gradeMap));
-
+            System.out.println("Selected Subject: " + selectedSubject);
+            System.out.println("Grade Map: " + gradeMap);
+            List<String> gradesForSubject = subject.getGradesForSubject(selectedSubject,gradeMap);
+            if (!gradeMap.containsKey(selectedSubject)) {
+                showAlert("Selected subject not found in grade map.");
+                return;
+            }
             if (gradesForSubject.isEmpty()){
                 showAlert("No grades found for the selected subject.");
                 return;
@@ -69,7 +76,7 @@ public class CalculatorProjectController {
             double median = calculator.calculateMedian(numericGrades);
             double failureRate = calculator.calculateFailureRate(numericGrades);
 
-            showAlert("Average: " + average + "\nMedian: " + median + "\nFailure Rate: " + failureRate + "%");
+            showResultPopup(average, median, failureRate);         //("Average: " + average + "\nMedian: " + median + "\nFailure Rate: " + failureRate + "%");
             } catch (IllegalArgumentException e) {
             showAlert("Error: " + e.getMessage());
             }
@@ -82,6 +89,15 @@ public class CalculatorProjectController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    private void showResultPopup(double average, double median, double failureRate) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Result");
+        alert.setHeaderText(null);
+        alert.setContentText("Average: " + average + "\nMedian: " + median + "\nFailure Rate: " + failureRate + "%");
+        alert.showAndWait();
+    }
+
 
 
 }

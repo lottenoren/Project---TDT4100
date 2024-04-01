@@ -27,6 +27,7 @@ public class Subject {
     public Subject(String subjectCode, Map<String, List<String>> gradeMap){
         this.subjectCode = subjectCode; 
         this.gradeMap = new HashMap<>();
+        this.gradeMap = gradeMap;
     }
 
     public String getSubjectCode(){
@@ -67,6 +68,11 @@ public class Subject {
     //henter ut karakterene fra et bestemt emnet og lagrer de i listen gradesForSubject. 
     public List<String> getGradesForSubject(String selectedSubject, Map<String, List<String>> gradeMap){
         List<String> gradesForSubject = new ArrayList<>();      //oppretter en arraylist for å lagre karakterene for det valgte emne. 
+
+        //eventuelt fjerne!! legegs bare inn for en sjekk.
+        if (!gradeMap.containsKey(selectedSubject)) {
+            throw new IllegalArgumentException("Selected subject not found in grade map.");
+        }
 
         for (String key : gradeMap.keySet()){
             if (key.endsWith(selectedSubject)){     //går gjennom hver nøkkel i gradeList. dersom nøkkelen stemmer med selectedSubject
