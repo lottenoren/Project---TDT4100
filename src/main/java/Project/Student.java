@@ -1,50 +1,19 @@
 package Project;
 
-import java.util.ArrayList;
-//import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-//import java.util.Scanner;
-
-
 
 public class Student {
-    private String studentName; 
-    //private static HashMap<String, String> gradeMap;
-    private Map<String, List<String>> gradeMap;
-    
+    String studentName; 
+    String subjectCode;
+    char grade;
 
 
-    public Student(String firstName, String lastName, Map<String, List<String>> gradeMap){
-        this.studentName = firstName + " " + lastName; 
-        this.gradeMap = gradeMap;
 
+    public Student(String studentName, String subjectCode, char grade){
+        this.studentName = studentName;
+        this.subjectCode = subjectCode;
+        this.grade = grade;
     }
 
-    public void addGrade(String subjectCode, char grade){
-        //validerer først emnekoden
-
-        Subject subject = new Subject(subjectCode, gradeMap);
-        subject.validateSubjectCode(subjectCode);
-
-        //validerer grade
-        subject.validGrade(grade);
-
-        //kontrollerer om student har lagt inn karakter til dette emnet tidligere. 
-        String key = studentName + "-" + subjectCode;
-        if(gradeMap.containsKey(key)){
-            System.out.println("Student have already added grade.");
-        } else {
-            /*gradeMap.put(key, String.valueOf(grade));
-            System.out.println("Grade added for" + studentName + "in subject" + subjectCode);*/
-            List<String> gradesList = new ArrayList<>(); // Opprett en ny liste
-            gradesList.add(String.valueOf(grade)); // Legg til enkeltkarakteren i den nye listen
-            gradeMap.put(key, gradesList); // Legg til den nye listen i gradeMap
-            System.out.println("Grade added for " + studentName + " in subject " + subjectCode + ": " + gradeMap);
-        }
-    }
-
-   
     public void setStudentName(String StudentName){
         if (StudentName.isBlank() || StudentName == null){
             throw new IllegalArgumentException("Name can`t be empty.");
@@ -72,39 +41,17 @@ public class Student {
         }
     } 
 
-    public String getStudenName(){
+    public String getStudentName(){
         return studentName;
     }
 
-    /*public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);  
+    public char getGrade(){
+        return grade;
+    }
 
+    public String getSubjectCode(){
+        return subjectCode;
+    }
 
-        System.out.println("Velkommen til karakterkalkulatoren");
-        System.out.println("Venligst skriv inn fornavn og etternavn:"); //samt emnekoden? 
-
-        System.out.println("Fornavn;");
-        String firstName = scanner.nextLine();
-        System.out.println("Etternavn;");
-        String lastName = scanner.nextLine(); 
-
-        //oppretter en student med det innskrevne navnet; 
-        Student studentName = new Student(firstName, lastName, gradeMap);
-        studentName.setStudentName(firstName + " " + lastName);
-
-        System.out.println("Skriv emnekode og karakter:");
-
-        System.out.println("Emnekode;");
-        String subjectCode = scanner.next();
-        System.out.println("Karakter;");
-        char grade = scanner.next().charAt(0); //gjør at bokstaven blir til en char
-        studentName.addGrade(subjectCode, grade);
-        
-        //Input felt for bruker for å velge emnekode
-        System.out.println("Skriv inn emnekode for å se gjennomsnitt, median og strykprosent:");
-        String selectedSubject = scanner.next();
-
-        scanner.close();
-    }*/
 }
 

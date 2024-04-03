@@ -6,6 +6,41 @@
     "configurations": [
         {
             "type": "java",
+            "name": "FileReadWriteExample",
+            "request": "launch",
+            "mainClass": "TDT4100_project/Project.FileReadWriteExample",
+            "projectName": "tdt4100_v2024_prosjekt_boilerplate"
+        },
+        {
+            "type": "java",
+            "name": "WritingAFile",
+            "request": "launch",
+            "mainClass": "TDT4100_project/Project.WritingAFile",
+            "projectName": "tdt4100_v2024_prosjekt_boilerplate"
+        },
+        {
+            "type": "java",
+            "name": "ReadingAFile",
+            "request": "launch",
+            "mainClass": "TDT4100_project/Project.ReadingAFile",
+            "projectName": "tdt4100_v2024_prosjekt_boilerplate"
+        },
+        {
+            "type": "java",
+            "name": "Fil",
+            "request": "launch",
+            "mainClass": "TDT4100_project/Project.Fil",
+            "projectName": "tdt4100_v2024_prosjekt_boilerplate"
+        },
+        {
+            "type": "java",
+            "name": "FileHandler",
+            "request": "launch",
+            "mainClass": "TDT4100_project/Project.FileHandler",
+            "projectName": "tdt4100_v2024_prosjekt_boilerplate"
+        },
+        {
+            "type": "java",
             "name": "CalculatorProjectApp",
             "request": "launch",
             "mainClass": "TDT4100_project/Project.CalculatorProjectApp",

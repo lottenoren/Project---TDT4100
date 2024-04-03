@@ -1,20 +1,25 @@
 package Project;
 
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Subject {
 
-    private String subjectCode; 
-    /*private String grade; 
-    private static HashMap<String, String> gradeCalculator;*/
+    private List<Student> grades = new ArrayList<>();
+    Map<String, List<Character>> gradesPerSubject = new HashMap<>();
+    String selectedSubject;
+    
 
-    @SuppressWarnings("unused")
-    private Map<String, List<String>> gradeMap;
 
     private static final List<String> lettersCombination = Arrays.asList("TDT", "TET", "TFE", "TMA", "TTK", "TTM", "TTT", "TBA", "TEP", "TGB", 
     "TKT", "TME", "TMM", "TMR", "TPD", "TPG", "TPK", "TVM", "TBT", "TFY", "TKJ", "TKP", "TMT", "TIØ", "BK", "AAR", "EXPH", "EXFAC", "HFEL", "AFR", "ALIT", 
@@ -22,83 +27,143 @@ public class Subject {
     "MUSV", "MVIT", "NFU", "NORD", "RVI", "SAM", "SWA", "TYSK", "RFEL", "IT", "MA", "ST", "GEOL", "AK", "BI", "BO", "FY", "KJ", "ZO", "SFEL", "GEOG", "HLS", 
     "IDR", "PED", "POL", "PPU", "PSY", "PSYPRO", "SARB", "SANT", "SOS", "SPED", "SØK", "ØKAD", "MD"
     );
+    private static final String FILE_PATH = "grades.txt";
+    //private static final int Student = 0;
 
-
-    public Subject(String subjectCode, Map<String, List<String>> gradeMap){
-        this.subjectCode = subjectCode; 
-        this.gradeMap = new HashMap<>();
-        this.gradeMap = gradeMap;
+    //metode for å hente karakterer fra filen ved oppretting av et nytt Subject-object
+    public void loadGradesForSubjectFromFile() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                String studentName = parts[0];
+                String subjectCode = parts[1];
+                char grade = parts[2].charAt(0);
+                // Legg til karakteren i den interne listen over karakterer
+                grades.add(new Student(studentName, subjectCode, grade));
+                // Oppdater gradesPerSubject
+                updateGradesPerSubject(subjectCode);
+                //debug-uttalelse for å kontrollre at emnekoden blir riktig hentet
+                System.out.println("Loaded grade for subject:" + subjectCode);
+            }
+            System.out.println("Grades loaded from file successfully.");
+        } catch (IOException e) {
+            System.out.println("Error loading grades from file: " + e.getMessage());
+        }
     }
+    
+    public void addGrade(String studentName, String subjectCode, char grade){
+        Student newGrade = new Student(studentName, subjectCode, grade);
+        grades.add(newGrade);
+        //loadGradesForSubjectFromFile();
 
-    public String getSubjectCode(){
-        return subjectCode; 
-    }
-
-    public boolean validateSubjectCode(String subjectCode){
-        if (subjectCode == null || subjectCode.isBlank()){
-            throw new IllegalArgumentException("Subjectcode can`t be empty");
-        }
-
-        String[] code = subjectCode.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
-        
-        //sjekker om subjectCode stemmer med listen lettersCombination 
-        if (!lettersCombination.contains(code[0])){
-            throw new IllegalArgumentException("Invalid subjectcode");
-        }
-        // sjekker om sisten delen av subjectCode består av fire tall
-        
-        if(code[1].length() != 4 && !code[1].matches("\\d{4}")){
-            throw new IllegalArgumentException("The numeric part of subject code must contain exactly four digits");
-        }
-
-        return true; 
-    }
-
-    //kontrollerer at grade består av A-F, godkjent ikke godkjent er P/0 ("P-godkjent" / "O-ikke godkjent")
-
-    public boolean validGrade(char grade){
-        List<Character> validGrades = Arrays.asList('A', 'B', 'C', 'D', 'E', 'F', 'P', 'O');
-        grade = Character.toUpperCase(grade); //gjør om til store bokstaver
-        if (!validGrades.contains(grade)){
-            throw new IllegalArgumentException("Grade has to be a charachter from A-F, if the subject is passed use P");
-        }
-        return true;
-    }
-
-    //henter ut karakterene fra et bestemt emnet og lagrer de i listen gradesForSubject. 
-    public List<String> getGradesForSubject(String selectedSubject, Map<String, List<String>> gradeMap){
-        List<String> gradesForSubject = new ArrayList<>();      //oppretter en arraylist for å lagre karakterene for det valgte emne. 
-
-        //eventuelt fjerne!! legegs bare inn for en sjekk.
-        if (!gradeMap.containsKey(selectedSubject)) {
-            throw new IllegalArgumentException("Selected subject not found in grade map.");
-        }
-
-        for (String key : gradeMap.keySet()){
-            if (key.endsWith(selectedSubject)){     //går gjennom hver nøkkel i gradeList. dersom nøkkelen stemmer med selectedSubject
-                List<String> studentGrades = gradeMap.get(key);    //henter vi ut verdien til denne nøkkelen ved å bruke gradeList.get(key), karakterene lagres midlertidig i listen studentGrades. 
-                gradesForSubject.addAll(studentGrades);     //legger alle karakteren fra studentgrades inn i gradesForSubject-listen. 
+        //sjekker om studentName har lagt til grade for det spesifikke subjectCode
+        for (Student existingStudent : grades){
+            if(existingStudent.studentName.equals(studentName) && existingStudent.subjectCode.equals(subjectCode)){
+                //Person har allerede lagt til grade for emnet, erstatter grade
+                existingStudent.grade = grade;
+                //oppdaterer gradesPerSubject
+                updateGradesPerSubject(subjectCode);
+                //lagrer karakterer for emnet til fil; 
+                saveGradesForSubjectToFile(grades);
+                return;
             }
         }
-        return gradesForSubject;
-    }
 
-    //metode for å konvertere gradesForSubject fra Streng til en liste av tegn, da den nå bare består av bokstavkarakterer. 
-    public List<Character> convertStringToCharacters(List<String> gradesForSubject){
-        List<Character> charactersGrades = new ArrayList<>();
-        for (String grade : gradesForSubject){
-            for(char character : grade.toCharArray()){
-                charactersGrades.add(character);
+        //personen har ikke lagt til karakter for emnet tidligere, legger til ny karakter 
+        Student newStudent = new Student(studentName, subjectCode, grade);
+        grades.add(newStudent);
+
+        //oppdaterer gradesPerSubject
+        updateGradesPerSubject(subjectCode);
+
+        /*//sjekker om studentName har lagt til grade for det spesifikke subjectCode
+        boolean existingGrade = false;
+        for (Student existingStudent : grades){
+            if(existingStudent.studentName.equals(studentName) && existingStudent.subjectCode.equals(subjectCode)){
+                //Person har allerede lagt til grade for emnet, erstatter grade
+                existingStudent.grade = grade;
+                existingGrade = true;
+                break;
             }
         }
-        return charactersGrades;
+
+        if (!existingGrade) {
+            // Hvis studenten ikke allerede eksisterer for dette emnet, legg til den nye karakteren
+            updateGradesPerSubject(subjectCode);
+        }*/
+
+        // Lagrer karakterer for emnet til fil
+        saveGradesForSubjectToFile(grades);
+
+        // Debug-uttalelse for å kontrollere at emnekoden blir lagt til riktig
+        System.out.println("Added grade for subject: " + subjectCode);
+
+    }
+
+    public void updateGradesPerSubject(String subjectCode){
+        //sletter karakter for emnet fra gradesPerSubject
+        gradesPerSubject.remove(subjectCode);
+
+        //legger til oppdatert karakterer for emnet
+        List<Character> gradeList = new ArrayList<>();
+        for (Student grade : grades){
+            if(grade.subjectCode.equals(subjectCode)){
+                gradeList.add(grade.grade);
+            }
+        }
+        gradesPerSubject.put(subjectCode, gradeList);
+    }
+
+    
+
+    //metode for å lagre karakterer til filen
+    public void saveGradesForSubjectToFile(List<Student> grades) {
+        /*String filePath = "grades.txt"; // Filbanen eller filnavnet
+        //FileHandler.writegradesForSubjectToFile(studentName, subjectCode, grade, filePath);
+        try (FileWriter writer = new FileWriter(filePath, true)) {
+            for (Student student : grades) {
+                writer.write("Student: " + student.getStudentName() + ", Subject Code: " + student.getSubjectCode() + ", Grade: " + student.getGrade() + "\n");
+            }
+        System.out.println("Data appended to file: " + filePath);
+        } catch (IOException e) {
+            System.out.println("Error appending data to file: " + e.getMessage());
+        }*/
+        try (FileWriter writer = new FileWriter(FILE_PATH)){
+            Set<String> uniqueStudents = new HashSet<>();
+            for (Student student : grades) {
+                writer.write("Student: " + student.studentName + ", Subject Code: " + student.subjectCode + ", Grade: " + student.grade + "\n");
+                uniqueStudents.add(student.studentName);
+            }
+            writer.close();
+            System.out.println("Data written to file: " + FILE_PATH);
+        } catch (IOException e) {
+            System.out.println("Error writing list to file: " + e.getMessage());
+        }
+    
+    }
+
+    public List<Character> getGradesForSubject(String selectedSubject){
+        //henter karakterliste for valgt emnekode
+        List<Character> gradesForSubject = gradesPerSubject.get(selectedSubject);
+
+        //sjekker om emnekoden eksisterer
+        if(gradesForSubject != null){
+            return gradesForSubject;
+        } else {
+            throw new IllegalArgumentException("Emnekoden eksisterer ikke");
+        }
     }
 
     //konverterer fra bokstav karakter til nummerisk verdi.
     //bruker switch-case-struktur fremfor mange if else utsagn. 
-    public List<Double> convertGradesToNumeric(List<Character> charactersGrades) {
+    public List<Double> convertGradesToNumeric(String selectedSubject) {
+        //Hent karakterlisten for det valgte emnet
+        List<Character> gradesForSubject = getGradesForSubject(selectedSubject);
+    
+        //konverterer karakterene til nummeriske verdier
         List<Double> numericGrades = new ArrayList<>();     //oppretter en ny liste hvor de nummeriske karakterene skal lagres
-        for (Character grade : charactersGrades) {          //itererer gjennom hver karakter i listen
+        for (Character grade : gradesForSubject) {          //itererer gjennom hver karakter i listen
             char uppercaseGrade = Character.toUpperCase(grade);     //konverterer karakterene til store bokstaver
             double numericGrade;                                    //oppretter en variabel hvor den numeriske karakterverdien kan lagres
             switch (uppercaseGrade) {                               //sjekker hvilken karakter vi har og tildeler den numeriske verdien
@@ -135,6 +200,40 @@ public class Subject {
     } 
 
 
-     
+
+    public boolean validateSubjectCode(String subjectCode){
+        if (subjectCode == null || subjectCode.isBlank()){
+            throw new IllegalArgumentException("Subjectcode can`t be empty");
+        }
+
+        String[] code = subjectCode.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
+        
+        //sjekker om subjectCode stemmer med listen lettersCombination 
+        if (!lettersCombination.contains(code[0])){
+            throw new IllegalArgumentException("Invalid subjectcode");
+        }
+        // sjekker om sisten delen av subjectCode består av fire tall
+        
+        if(code[1].length() != 4 && !code[1].matches("\\d{4}")){
+            throw new IllegalArgumentException("The numeric part of subject code must contain exactly four digits");
+        }
+
+        return true; 
+    }
+
+    //kontrollerer at grade består av A-F, godkjent ikke godkjent er P/0 ("P-godkjent" / "O-ikke godkjent")
+
+    public boolean validGrade(char grade){
+        List<Character> validGrades = Arrays.asList('A', 'B', 'C', 'D', 'E', 'F', 'P', 'O');
+        grade = Character.toUpperCase(grade); //gjør om til store bokstaver
+        if (!validGrades.contains(grade)){
+            throw new IllegalArgumentException("Grade has to be a charachter from A-F, if the subject is passed use P");
+        }
+        return true;
+    }
+
+    
+
+    
 
 }

@@ -1,26 +1,17 @@
-package Project;
+package Project; 
 
-
-
-import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
-
-
-import java.util.Map;
 import java.util.List;
-import java.util.HashMap;
 
+import javafx.fxml.FXML; 
+import javafx.scene.control.Alert; 
+import javafx.scene.control.TextField; 
 
 
 public class CalculatorProjectController {
-    
-    @FXML
-    private TextField firstNameField;
 
     @FXML
-    private TextField lastNameField;
-    
+    private TextField studentNameField;
+
     @FXML
     private TextField subjectCodeField;
 
@@ -30,74 +21,75 @@ public class CalculatorProjectController {
     @FXML
     private TextField selectedSubjectField;
 
-
-    private Student student;
-    //private Map<String, List<String>> gradeMap;
-    private Map<String, List<String>> gradeMap = new HashMap<>();
-
-
-    /*@FXML 
-    public void initialize(){
-        gradeMap = new HashMap<>();
-    }*/
+    private Subject subject;
+    private Calculator calculator;
 
     @FXML
-    public void calculate(){
-        try {
-            String firstName = firstNameField.getText();
-            String lastName = lastNameField.getText();
-            String subjectCode = subjectCodeField.getText();
-            char grade = gradeField.getText().charAt(0);
-            String selectedSubject = selectedSubjectField.getText();
-
-
-            student = new Student(firstName, lastName, gradeMap);
-            //student.setStudentName(firstName + " " + lastName);
-            student.addGrade(subjectCode, grade);
-            
-            Subject subject = new Subject(subjectCode, gradeMap);
-            System.out.println("Selected Subject: " + selectedSubject);
-            System.out.println("Grade Map: " + gradeMap);
-            List<String> gradesForSubject = subject.getGradesForSubject(selectedSubject,gradeMap);
-            if (!gradeMap.containsKey(selectedSubject)) {
-                showAlert("Selected subject not found in grade map.");
-                return;
-            }
-            if (gradesForSubject.isEmpty()){
-                showAlert("No grades found for the selected subject.");
-                return;
-            }
-
-            List<Character> charactersGrades = subject.convertStringToCharacters(gradesForSubject);
-            List<Double> numericGrades = subject.convertGradesToNumeric(charactersGrades);
-
-            Calculator calculator = new Calculator();
-            double average = calculator.calculateAverage(numericGrades);
-            double median = calculator.calculateMedian(numericGrades);
-            double failureRate = calculator.calculateFailureRate(numericGrades);
-
-            showResultPopup(average, median, failureRate);         //("Average: " + average + "\nMedian: " + median + "\nFailure Rate: " + failureRate + "%");
-            } catch (IllegalArgumentException e) {
-            showAlert("Error: " + e.getMessage());
-            }
+    private void initialize(){
+        subject = new Subject();
+        subject.loadGradesForSubjectFromFile();
+        calculator = new Calculator();
     }
 
-    private void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Result");
+    @FXML
+    private void calculate(){
+        try{ 
+            String studentName = studentNameField.getText();
+            String subjectCode = subjectCodeField.getText();
+            char grade = gradeField.getText().charAt(0); 
+
+            if (subject.validateSubjectCode(subjectCode) && subject.validGrade(grade)){
+                subject.addGrade(studentName, subjectCode, grade);
+
+                // Sjekk om det valgte emnet eksisterer før vi fortsetter med beregningene
+                if (!subject.gradesPerSubject.containsKey(subjectCode)) {
+                    throw new IllegalArgumentException("Selected subject does not exist.");
+                }
+
+
+                 // Get numeric grades for the selected subject
+                String selectedSubject = selectedSubjectField.getText();
+                if (selectedSubject != null && !selectedSubject.isEmpty()) {
+                    // Convert grades to numeric values
+                    List<Double> numericGrades = subject.convertGradesToNumeric(selectedSubject);
+                    
+                    // Perform calculations
+                    double average = calculator.calculateAverage(numericGrades);
+                    double median = calculator.calculateMedian(numericGrades);
+                    double failureRate = calculator.calculateFailureRate(numericGrades);
+                    
+                    // Display results
+                    displayResults(average, median, failureRate);
+                }
+            }
+        }catch (IllegalArgumentException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", e.getMessage());
+        }
+    } 
+
+    private void displayResults(double average, double median, double failureRate) {
+        // Display results however you want
+        System.out.println("Average: " + average);
+        System.out.println("Median: " + median);
+        System.out.println("Failure Rate: " + failureRate);
+    }
+
+    @FXML
+    private void saveToFile() {
+        // Add save to file functionality here
+        // Make sure to get the average first
+        double average = 0.0; // Change this to actual calculated average
+        calculator.saveToFile(average);
+    }
+
+
+
+
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-    private void showResultPopup(double average, double median, double failureRate) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Result");
-        alert.setHeaderText(null);
-        alert.setContentText("Average: " + average + "\nMedian: " + median + "\nFailure Rate: " + failureRate + "%");
-        alert.showAndWait();
-    }
-
-
-
 }

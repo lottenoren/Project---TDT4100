@@ -14,13 +14,14 @@ public class Calculator implements CalculatorInterface {
         return sum / numericGrades.size();
     }
 
+
     @Override
     public double calculateMedian(List<Double> numericGrades){
         Collections.sort(numericGrades);        //listen sorteres i stigende rekkefølge. 
         int numberOfGrades = numericGrades.size();
         //sjekker om antall karakterer er oddetall eller partall for å finne medianen
         if (numberOfGrades % 2 == 0){
-            int midtIndex1 = numberOfGrades / 2 + 1;         //finner index til de to midterste tallene. 
+            int midtIndex1 = numberOfGrades / 2 - 1;         //finner index til de to midterste tallene. 
             int midtIndex2 = numberOfGrades / 2;
             double median = (numericGrades.get(midtIndex1) + numericGrades.get(midtIndex2)) / 2.0;
             return median;
@@ -41,4 +42,13 @@ public class Calculator implements CalculatorInterface {
         }
         return (double) failCount / numericGrades.size() * 100; // finne antall studenter som har fått F, dele på totalt antall studenter og gange med 100. 
     }
+
+    public double saveToFile(double average) {
+        String filePath = "average.txt"; // Filbanen eller filnavnet
+        FileHandler.writeAverageToFile(average, filePath);
+        return average;
+    }
+
+    
+
 }
