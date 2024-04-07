@@ -11,7 +11,8 @@ public class Calculator implements CalculatorInterface {
         for (Double grade : numericGrades){
             sum += grade;
         }
-        return sum / numericGrades.size();
+        double average = sum / numericGrades.size();
+        return Math.round(average * 100) / 100;
     }
 
 
@@ -24,11 +25,11 @@ public class Calculator implements CalculatorInterface {
             int midtIndex1 = numberOfGrades / 2 - 1;         //finner index til de to midterste tallene. 
             int midtIndex2 = numberOfGrades / 2;
             double median = (numericGrades.get(midtIndex1) + numericGrades.get(midtIndex2)) / 2.0;
-            return median;
+            return Math.round(median * 100) / 100; //runder av til to desimaler
         } else {        //oddetall liste
             int midtIndex = numberOfGrades / 2; 
             double median = numericGrades.get(midtIndex);
-            return median; 
+            return Math.round(median * 100) / 100; //runder av til to desimaler
         }
     }
 
@@ -40,14 +41,15 @@ public class Calculator implements CalculatorInterface {
                 failCount++;
             }
         }
-        return (double) failCount / numericGrades.size() * 100; // finne antall studenter som har fått F, dele på totalt antall studenter og gange med 100. 
+        double failureRate = (double) failCount / numericGrades.size() * 100; // finne antall studenter som har fått F, dele på totalt antall studenter og gange med 100. 
+        return Math.round(failureRate * 100.0) / 100.0; // Rund av til to desimaler
     }
 
-    public double saveToFile(double average) {
+    /*public double saveToFile(double average) {
         String filePath = "average.txt"; // Filbanen eller filnavnet
         FileHandler.writeAverageToFile(average, filePath);
-        return average;
-    }
+        return Math.round(average * 100) / 100;
+    }*/
 
     
 

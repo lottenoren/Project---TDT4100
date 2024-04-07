@@ -1,10 +1,19 @@
 package Project; 
 
+import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 
-import javafx.fxml.FXML; 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert; 
-import javafx.scene.control.TextField; 
+import javafx.scene.control.TextField;
+import javafx.stage.Stage; 
+
 
 
 public class CalculatorProjectController {
@@ -58,8 +67,10 @@ public class CalculatorProjectController {
                     double median = calculator.calculateMedian(numericGrades);
                     double failureRate = calculator.calculateFailureRate(numericGrades);
                     
+                    List<Character> gradesForSubject = subject.getGradesForSubject(selectedSubject);
+                    Collections.sort(gradesForSubject);
                     // Display results
-                    displayResults(average, median, failureRate);
+                    displayResults(average, median, failureRate, gradesForSubject);
                 }
             }
         }catch (IllegalArgumentException e) {
@@ -67,19 +78,30 @@ public class CalculatorProjectController {
         }
     } 
 
-    private void displayResults(double average, double median, double failureRate) {
+    private void displayResults(double average, double median, double failureRate, List<Character> gradesForSubject) {
         // Display results however you want
-        System.out.println("Average: " + average);
-        System.out.println("Median: " + median);
-        System.out.println("Failure Rate: " + failureRate);
+       Alert alert = new Alert(Alert.AlertType.INFORMATION);
+       alert.setTitle("Calculation Results");
+        alert.setHeaderText(null);
+        alert.setContentText("Average: " + average + "\n" +
+                         "Median: " + median + "\n" +
+                         "Failure Rate: " + failureRate + "\n" +
+                         "Karakterer: " + gradesForSubject);
+        alert.showAndWait();
+        
     }
 
     @FXML
     private void saveToFile() {
         // Add save to file functionality here
         // Make sure to get the average first
-        double average = 0.0; // Change this to actual calculated average
-        calculator.saveToFile(average);
+        //double average = 0.0; // Change this to actual calculated average
+        //calculator.saveToFile(average);
+    }
+
+    @FXML
+    private void saveGradesForSubjectToFile(){
+
     }
 
 
@@ -92,4 +114,6 @@ public class CalculatorProjectController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    
 }
