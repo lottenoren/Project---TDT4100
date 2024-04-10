@@ -1,3 +1,20 @@
-Student: Student: Lotte Noren, Subject Code:  Subject Code: TTM1234, Grade:  
+Student:   Student, Subject Code:   Subject Code, Grade:  
+Student:   Student, Subject Code:   Subject Code, Grade:  
+Student:   Student, Subject Code:   Subject Code, Grade:  
+Student:   Student, Subject Code:   Subject Code, Grade:  
+Student:   Student, Subject Code:   Subject Code, Grade:  
+Student:   Student, Subject Code:   Subject Code, Grade: B
+Student:   Student, Subject Code:   Subject Code, Grade: A
+Student:   Student, Subject Code:   Subject Code, Grade: C
+Student:   LOtte iseyfb2w, Subject Code:   Subject Code, Grade: B
+Student:  Lotte skdjfn, Subject Code:  TTM1234, Grade: B
 Student: Lotte Noren, Subject Code: TTM1234, Grade: B
+Student: lotte Noren, Subject Code: TTM1234, Grade: B
+Student: lotte sølvsberg, Subject Code: TTM1234, Grade: A
+Student: lotte aksel, Subject Code: TTM1234, Grade: F
+Student: lotte aksel, Subject Code: TTM1234, Grade: F
+Student: lotte Noren, Subject Code: TTM1234, Grade: B
+Student: lotte Noren, Subject Code: TTM1234, Grade: B
+Student: lotte noren , Subject Code: TTM1234, Grade: B
+Student: lotte noren , Subject Code: TTM1111, Grade: B
 Student: Lotte Noren, Subject Code: TTM1234, Grade: B

@@ -15,9 +15,10 @@ import java.util.Set;
 
 public class Subject {
 
-    private List<Student> grades = new ArrayList<>();
-    Map<String, List<Character>> gradesPerSubject = new HashMap<>();
+    private static List<Student> grades = new ArrayList<>();
+    static Map<String, List<Character>> gradesPerSubject = new HashMap<>();
     String selectedSubject;
+    
     
 
 
@@ -30,20 +31,28 @@ public class Subject {
     private static final String FILE_PATH = "grades.txt";
     //private static final int Student = 0;
 
+    // //metode for å hente karakterer fra filen ved oppretting av et nytt Subject-object
+    // public void loadGradesForSubjectFromFile(List<Student> grades){
+    //     FileHandler.loadGradesForSubjectFromFile();
+    // }
     //metode for å hente karakterer fra filen ved oppretting av et nytt Subject-object
-    public void loadGradesForSubjectFromFile() {
+    public static void loadGradesForSubjectFromFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                String studentName = parts[0];
-                String subjectCode = parts[1];
-                char grade = parts[2].charAt(0);
+                String studentInfo = parts[0];
+                String studentName = studentInfo.split(": ")[1];
+                String subjectInfo = parts[1];
+                String subjectCode = subjectInfo.split(": ")[1];
+                String gradeInfo = parts[2];
+                char grade = gradeInfo.charAt(gradeInfo.length() - 1);
                 //Legg til karakteren i den interne listen over karakterer
                 grades.add(new Student(studentName, subjectCode, grade));
                 //Oppdater gradesPerSubject
                 updateGradesPerSubject(subjectCode);
                 //debug-uttalelse for å kontrollre at emnekoden blir riktig hentet
+                System.out.println("HEi" + grade);
                 System.out.println("Loaded grade for subject:" + subjectCode);
             }
             System.out.println("Grades loaded from file successfully.");
@@ -81,7 +90,7 @@ public class Subject {
 
     }
 
-    public void updateGradesPerSubject(String subjectCode){
+    public static void updateGradesPerSubject(String subjectCode){
         //sletter karakter for emnet fra gradesPerSubject
         gradesPerSubject.remove(subjectCode);
         //legger til oppdatert karakterer for emnet
@@ -94,15 +103,17 @@ public class Subject {
         gradesPerSubject.put(subjectCode, gradeList);
     }
 
-    
-
+    // public void saveGradesForSubjectToFile(List<Student> grades){
+    //     FileHandler.saveGradesForSubjectToFile(grades);
+    // }
     //metode for å lagre karakterer til filen
-    public void saveGradesForSubjectToFile(List<Student> grades) {
+    public static void saveGradesForSubjectToFile(List<Student> grades) {
     
         try (FileWriter writer = new FileWriter(FILE_PATH)){
             writer.write("");           //tømmer filen før den skrives til
             Set<String> uniqueStudents = new HashSet<>();
             for (Student student : grades) {
+                //System.out.println("Student: " + student.studentName + ", Subject Code: " + student.subjectCode + ", Grade: " + student.grade);
                 writer.write("Student: " + student.studentName + ", Subject Code: " + student.subjectCode + ", Grade: " + student.grade + "\n");
                 //writer.write(student.studentName + "," + student.subjectCode + "," + student.grade + "\n");
                 uniqueStudents.add(student.studentName);
@@ -114,6 +125,7 @@ public class Subject {
         }
     
     }
+
 
     public List<Character> getGradesForSubject(String selectedSubject){
         //henter karakterliste for valgt emnekode

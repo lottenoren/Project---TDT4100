@@ -36,7 +36,7 @@ public class CalculatorProjectController {
     @FXML
     private void initialize(){
         subject = new Subject();
-        subject.loadGradesForSubjectFromFile();
+        Subject.loadGradesForSubjectFromFile();
         calculator = new Calculator();
     }
 
