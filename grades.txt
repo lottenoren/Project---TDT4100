@@ -1,1 +1,1 @@
-Student: TTM1234, Subject Code: TTM1234, Grade: B
+Student: Lotte Noren, Subject Code: TTM1234, Grade: B

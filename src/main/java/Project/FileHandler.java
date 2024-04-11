@@ -11,7 +11,9 @@ public class FileHandler{
     private static final String FILE_PATH = "grades.txt";
 
 
-    //metode for å hente karakterer fra filen ved oppretting av et nytt Subject-object
+    /**
+     * Metode for å hente karakterer fra filen ved oppretting et et nytt Subject-objekt
+     */
     public static void loadGradesForSubjectFromFile() {
         List<Student> grades = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
@@ -28,9 +30,6 @@ public class FileHandler{
                 grades.add(new Student(studentName, subjectCode, grade));
                 //Oppdater gradesPerSubject
                 updateGradesPerSubject(subjectCode);
-                //debug-uttalelse for å kontrollre at emnekoden blir riktig hentet
-                System.out.println("HEi" + grade);
-                System.out.println("Loaded grade for subject:" + subjectCode);
             }
             System.out.println("Grades loaded from file successfully.");
         } catch (IOException e) {
@@ -38,6 +37,10 @@ public class FileHandler{
         }
     }
 
+    /**
+     * Lagrer informasjon til fil. 
+     * @param grades
+     */
     public static void saveGradesForSubjectToFile(List<Student> grades) {
         try (FileWriter writer = new FileWriter(FILE_PATH)) {
             for (Student student : grades) {

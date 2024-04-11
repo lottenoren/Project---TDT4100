@@ -25,17 +25,21 @@ public class CalculatorProjectController {
     private TextField selectedSubjectField;
 
     private Subject subject;
-    private Student student;
+ 
     private Calculator calculator;
+    private SubjectValidate subjectValidate;
 
     @FXML
     private void initialize(){
         subject = new Subject();
-        //student = new Student(String, String, char);
-        //Subject.loadGradesForSubjectFromFile();
-       calculator = new Calculator();
-       FileHandler.loadGradesForSubjectFromFile();
+        calculator = new Calculator();
+        subjectValidate = new SubjectValidate();
+        
+        FileHandler.loadGradesForSubjectFromFile();
+
     }
+
+
 
     @FXML 
     private void loadGradesForSubjectFromFile(){
@@ -45,12 +49,16 @@ public class CalculatorProjectController {
     @FXML
     private void calculate(){
         //fileHandler.loadGradesForSubjectFromFile();
+         // Sjekk om studentnavnet er gyldig
+        
         try{ 
             String studentName = studentNameField.getText();
             String subjectCode = subjectCodeField.getText();
             char grade = gradeField.getText().charAt(0); 
+            
 
-            if (subject.validateSubjectCode(subjectCode) && subject.validGrade(grade)){
+        
+            if (subjectValidate.validateSubjectCode(subjectCode) && subjectValidate.validGrade(grade)){
                 subject.addGrade(studentName, subjectCode, grade);
 
                 // Sjekk om det valgte emnet eksisterer før vi fortsetter med beregningene
@@ -58,21 +66,19 @@ public class CalculatorProjectController {
                     throw new IllegalArgumentException("Selected subject does not exist.");
                 }
 
-
-                 // Get numeric grades for the selected subject
                 String selectedSubject = selectedSubjectField.getText();
                 if (selectedSubject != null && !selectedSubject.isEmpty()) {
-                    // Convert grades to numeric values
-                    List<Double> numericGrades = subject.convertGradesToNumeric(selectedSubject);
                     
-                    // Perform calculations
+                    List<Double> numericGrades = subjectValidate.convertGradesToNumeric(selectedSubject);
+                    
+                    
                     double average = calculator.calculateAverage(numericGrades);
                     double median = calculator.calculateMedian(numericGrades);
                     double failureRate = calculator.calculateFailureRate(numericGrades);
                     
                     List<Character> gradesForSubject = subject.getGradesForSubject(selectedSubject);
                     Collections.sort(gradesForSubject);
-                    // Display results
+                    
                     displayResults(average, median, failureRate, gradesForSubject);
                 }
             }
@@ -82,7 +88,6 @@ public class CalculatorProjectController {
     } 
 
     private void displayResults(double average, double median, double failureRate, List<Character> gradesForSubject) {
-        // Display results however you want
        Alert alert = new Alert(Alert.AlertType.INFORMATION);
        alert.setTitle("Calculation Results");
         alert.setHeaderText(null);
@@ -104,8 +109,6 @@ public class CalculatorProjectController {
     private void saveGradesForSubjectToFile(){
         FileHandler.saveGradesForSubjectToFile(subject.getGrades());
     }
-
-
 
 
     private void showAlert(Alert.AlertType type, String title, String message) {

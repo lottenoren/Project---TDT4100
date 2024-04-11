@@ -14,13 +14,13 @@ public class Student {
         this.grade = grade;
     }
 
-    public void setStudentName(String StudentName){
+    public void validateStudentName(String StudentName){
         if (StudentName.isBlank() || StudentName == null){
             throw new IllegalArgumentException("Name can`t be empty.");
         }
         String[] name = StudentName.split(" ");
 
-        if(name.length < 2){ //sjekker at det er 3 ledd i det som er blitt skrevet. Enderer dette dersom det er mulig å lage "bokser en for fornavn og en for etternavn, deretter en for emnekoden."
+        if(name.length < 2){ 
             throw new IllegalArgumentException("Write both first name and last name, excluding any middle names and additional last names. ");
         }
         
