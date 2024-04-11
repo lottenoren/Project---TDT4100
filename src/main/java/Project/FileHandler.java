@@ -7,12 +7,13 @@ import java.util.List;
 
 
 public class FileHandler{
-    static List<Student> grades = new ArrayList<>();
+    
     private static final String FILE_PATH = "grades.txt";
 
 
     //metode for å hente karakterer fra filen ved oppretting av et nytt Subject-object
     public static void loadGradesForSubjectFromFile() {
+        List<Student> grades = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -23,7 +24,6 @@ public class FileHandler{
                 String subjectCode = subjectInfo.split(": ")[1];
                 String gradeInfo = parts[2];
                 char grade = gradeInfo.charAt(gradeInfo.length() - 1);
-                
                 //Legg til karakteren i den interne listen over karakterer
                 grades.add(new Student(studentName, subjectCode, grade));
                 //Oppdater gradesPerSubject
@@ -41,8 +41,6 @@ public class FileHandler{
     public static void saveGradesForSubjectToFile(List<Student> grades) {
         try (FileWriter writer = new FileWriter(FILE_PATH)) {
             for (Student student : grades) {
-                // Skriv hver student og karakter til filen
-                // Implementasjonen av denne metoden avhenger av hvordan dataene skal lagres i filen
                 writer.write("Student: " + student.getStudentName() + ", Subject Code: " + student.getSubjectCode() + ", Grade: " + student.getGrade() + "\n");
             }
             System.out.println("Data written to file: " + FILE_PATH);
@@ -54,20 +52,6 @@ public class FileHandler{
         Subject.updateGradesPerSubject(subjectCode);
     }
 
-    public static void writeAverageToFile(double average, String filePath) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'writeAverageToFile'");
-    }
+    
     
 }
-
-
-
-
-
-
-
-
-
-
-
