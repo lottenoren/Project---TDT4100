@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class Subject {
 
-    private static List<Student> grades = new ArrayList<>();
+    private static List<Student> grades;
     static Map<String, List<Character>> gradesPerSubject = new HashMap<>();
     String selectedSubject;
     
@@ -64,7 +64,7 @@ public class Subject {
     public void addGrade(String studentName, String subjectCode, char grade){
         Student newGrade = new Student(studentName, subjectCode, grade);
         grades.add(newGrade);
-        //loadGradesForSubjectFromFile();
+        loadGradesForSubjectFromFile();
 
         //sjekker om studentName har lagt til grade for det spesifikke subjectCode
         for (Student existingStudent : grades){
@@ -91,6 +91,9 @@ public class Subject {
     }
 
     public static void updateGradesPerSubject(String subjectCode){
+        if (grades == null){
+            grades = new ArrayList<>();
+        }
         //sletter karakter for emnet fra gradesPerSubject
         gradesPerSubject.remove(subjectCode);
         //legger til oppdatert karakterer for emnet
@@ -137,6 +140,9 @@ public class Subject {
         } else {
             throw new IllegalArgumentException("Emnekoden eksisterer ikke");
         }
+    }
+    public List<Student> getGrades() {
+        return grades;
     }
 
     //konverterer fra bokstav karakter til nummerisk verdi.

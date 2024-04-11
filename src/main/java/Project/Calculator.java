@@ -45,11 +45,7 @@ public class Calculator implements CalculatorInterface {
         return Math.round(failureRate * 100.0) / 100.0; // Rund av til to desimaler
     }
 
-    /*public double saveToFile(double average) {
-        String filePath = "average.txt"; // Filbanen eller filnavnet
-        FileHandler.writeAverageToFile(average, filePath);
-        return Math.round(average * 100) / 100;
-    }*/
+   
 
     
 

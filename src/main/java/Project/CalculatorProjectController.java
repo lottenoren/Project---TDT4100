@@ -1,18 +1,12 @@
 package Project; 
 
-import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
 
-import javafx.event.ActionEvent;
+import java.util.List;
+import java.util.Collections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert; 
 import javafx.scene.control.TextField;
-import javafx.stage.Stage; 
+
 
 
 
@@ -31,17 +25,26 @@ public class CalculatorProjectController {
     private TextField selectedSubjectField;
 
     private Subject subject;
+    private Student student;
     private Calculator calculator;
 
     @FXML
     private void initialize(){
         subject = new Subject();
-        Subject.loadGradesForSubjectFromFile();
-        calculator = new Calculator();
+        //student = new Student(String, String, char);
+        //Subject.loadGradesForSubjectFromFile();
+       calculator = new Calculator();
+       FileHandler.loadGradesForSubjectFromFile();
+    }
+
+    @FXML 
+    private void loadGradesForSubjectFromFile(){
+        FileHandler.loadGradesForSubjectFromFile();
     }
 
     @FXML
     private void calculate(){
+        //fileHandler.loadGradesForSubjectFromFile();
         try{ 
             String studentName = studentNameField.getText();
             String subjectCode = subjectCodeField.getText();
@@ -51,7 +54,7 @@ public class CalculatorProjectController {
                 subject.addGrade(studentName, subjectCode, grade);
 
                 // Sjekk om det valgte emnet eksisterer før vi fortsetter med beregningene
-                if (!subject.gradesPerSubject.containsKey(subjectCode)) {
+                if (!Subject.gradesPerSubject.containsKey(subjectCode)) {
                     throw new IllegalArgumentException("Selected subject does not exist.");
                 }
 
@@ -93,15 +96,13 @@ public class CalculatorProjectController {
 
     @FXML
     private void saveToFile() {
-        // Add save to file functionality here
-        // Make sure to get the average first
-        //double average = 0.0; // Change this to actual calculated average
-        //calculator.saveToFile(average);
+        subject.getGrades();
     }
+
 
     @FXML
     private void saveGradesForSubjectToFile(){
-
+        FileHandler.saveGradesForSubjectToFile(subject.getGrades());
     }
 
 
