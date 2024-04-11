@@ -23,8 +23,6 @@
 
     <Label text="Selected Subject:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
     <TextField fx:id="selectedSubjectField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-
-    <Button text="Save Average to File" onAction="#saveToFile" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
    
 
     <Button text="Calculate" onAction="#calculate" GridPane.columnIndex="1" GridPane.rowIndex="5"/>

@@ -14,6 +14,11 @@ public class Student {
         this.grade = grade;
     }
 
+    /**
+     * Validerer studentnavn
+     * @param StudentName
+     */
+
     public void validateStudentName(String StudentName){
         if (StudentName.isBlank() || StudentName == null){
             throw new IllegalArgumentException("Name can`t be empty.");

@@ -4,8 +4,11 @@ import java.util.Collections;
 import java.util.List;
 
 public class Calculator implements CalculatorInterface {
+
     
-    @Override
+    /**
+     * Metode som regner ut gjennomsnittet
+     */
     public double calculateAverage(List<Double> numericGrades){
         double sum = 0; 
         for (Double grade : numericGrades){
@@ -16,7 +19,9 @@ public class Calculator implements CalculatorInterface {
     }
 
 
-    @Override
+    /**
+     * Metode som regner ut median
+     */
     public double calculateMedian(List<Double> numericGrades){
         Collections.sort(numericGrades);        //listen sorteres i stigende rekkefølge. 
         int numberOfGrades = numericGrades.size();
@@ -33,7 +38,9 @@ public class Calculator implements CalculatorInterface {
         }
     }
 
-    @Override
+    /**
+     * Metode som regner ut strykprosent 
+     * */
     public double calculateFailureRate(List<Double> numericGrades){
         int failCount = 0; 
         for (Double grade : numericGrades) {

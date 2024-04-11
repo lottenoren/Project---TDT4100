@@ -45,7 +45,6 @@ public class Subject {
      * Oppdaterer karakter til emnet dersom student har lagt til karakter tidligere
      * @param subjectCode
      */
-
     public static void updateGradesPerSubject(String subjectCode){
         if (grades == null){
             grades = new ArrayList<>();
@@ -63,12 +62,12 @@ public class Subject {
     }
 
     
-/**
- * Henter ut en liste med karakter for valgt emnekode. Listen heter gradesForSubject
- * @param selectedSubject
- * @return
- */
-    public List<Character> getGradesForSubject(String selectedSubject){
+    /**
+     * Henter ut en liste med karakter for valgt emnekode. Listen heter gradesForSubject
+     * @param selectedSubject
+     * @return
+    */
+    public static List<Character> getGradesForSubject(String selectedSubject){
     
         List<Character> gradesForSubject = gradesPerSubject.get(selectedSubject);
 
