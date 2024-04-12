@@ -86,7 +86,7 @@ public class Subject {
         if(gradesForSubject != null){
             return gradesForSubject;
         } else {
-            throw new IllegalArgumentException("Emnekoden eksisterer ikke");
+            throw new IllegalArgumentException("SubjectCode does not exist");
         }
     }
 

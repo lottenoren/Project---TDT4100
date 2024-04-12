@@ -1,2 +1,6 @@
-Student: Lotte Noren, Subject Code: TTM1234, Grade: B
-Student: Lo no, Subject Code: TTM1234, Grade: B
+Student: Lotte Noren, Subject Code: TTM1234, Grade: A
+Student: Kåre Per, Subject Code: TDT4321, Grade: B
+Student: Lotte Sølvsberg, Subject Code: TTM1234, Grade: B
+Student: Lotte Sølvsberg, Subject Code: TTM1233, Grade: B
+Student: Lotte Noren , Subject Code: TTM1234, Grade: B
+Student: Lotte Noren, Subject Code: TTM1233, Grade: F

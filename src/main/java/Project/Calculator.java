@@ -13,7 +13,7 @@ public class Calculator implements CalculatorInterface {
         double sum = 0; 
 
         for (Double grade : numericGrades){
-            
+
             sum += grade;
         }
 
@@ -60,9 +60,4 @@ public class Calculator implements CalculatorInterface {
         double failureRate = (double) failCount / numericGrades.size() * 100; 
         return Math.round(failureRate * 100.0) / 100.0; 
     }
-
-   
-
-    
-
 }

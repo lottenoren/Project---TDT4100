@@ -46,6 +46,10 @@ public class Student {
         return subjectCode;
     }
 
+    /**
+     * Setter for grade 
+     * @param grade
+     */
     public void setGrade(char grade){
         this.grade = grade;
     }

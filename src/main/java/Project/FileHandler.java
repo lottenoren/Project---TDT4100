@@ -65,11 +65,7 @@ public class FileHandler{
         }
     }
 
-    private static void updateGradesPerSubject(String subjectCode) {
-
-        Subject.updateGradesPerSubject(subjectCode);
-    }
-
+ 
     /**
      * Metode for å tømme filen
      */
