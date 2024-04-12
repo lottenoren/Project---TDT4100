@@ -7,11 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 
-public class SubjectValidate {
+public class Validate {
 
 
     static Map<String, List<Character>> gradesPerSubject = new HashMap<>();
     Subject subject = new Subject();
+    
 
 
     private static final List<String> lettersCombination = Arrays.asList("TDT", "TET", "TFE", "TMA", "TTK", "TTM", "TTT", "TBA", "TEP", "TGB", 
@@ -21,6 +22,32 @@ public class SubjectValidate {
     "IDR", "PED", "POL", "PPU", "PSY", "PSYPRO", "SARB", "SANT", "SOS", "SPED", "SØK", "ØKAD", "MD"
     );
 
+    /**
+     * Validerer studentname
+     * @param StudentName
+     */
+
+    public boolean validateStudentName(String StudentName){
+        if (StudentName.isBlank() || StudentName == null){
+            throw new IllegalArgumentException("Name can`t be empty.");
+        }
+        String[] name = StudentName.split(" ");
+
+        if(name.length < 2){ 
+            throw new IllegalArgumentException("Write both first name and last name, excluding any middle names and additional last names. ");
+        }
+        
+        for (String part : name) {
+            if (!part.matches("^[ÆØÅæøåa-zA-Z]+$")) {
+                System.out.println("Ugyldig del av navnet: " + part);
+                throw new IllegalArgumentException("Studentname can only contains letters.");
+            } 
+            if (part.length() < 2) {
+                throw new IllegalArgumentException("First name and last name must be atleast two letters long.");
+            }
+        }
+        return true;
+    } 
 
     /**
      * Metode for å validere karakterer. Gyldige karakterer er A-F, dersom faget er godkjent/ikke godkjent er P/0 ("P-godkjent" / "O-ikke godkjent")
@@ -37,16 +64,22 @@ public class SubjectValidate {
         return true;
     }
 
+    /**
+     * Validerer subjectCode
+     * @param subjectCode
+     * @return
+     */
+
     public boolean validateSubjectCode(String subjectCode){
             if (subjectCode == null || subjectCode.isBlank()){
                 throw new IllegalArgumentException("Subjectcode can`t be empty");
             }
             String[] code = subjectCode.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
-            //sjekker om subjectCode stemmer med listen lettersCombination 
+            
             if (!lettersCombination.contains(code[0])){
                 throw new IllegalArgumentException("Invalid subjectcode");
             }
-            // sjekker om sisten delen av subjectCode består av fire tall
+            
             if(code[1].length() != 4 && !code[1].matches("\\d{4}")){
                 throw new IllegalArgumentException("The numeric part of subject code must contain exactly four digits");
             }

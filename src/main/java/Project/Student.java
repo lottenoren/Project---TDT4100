@@ -6,7 +6,12 @@ public class Student {
     String subjectCode;
     char grade;
 
-
+    /**
+     * Konstruktør til student-klassen 
+     * @param studentName
+     * @param subjectCode
+     * @param grade
+     */
 
     public Student(String studentName, String subjectCode, char grade){
         this.studentName = studentName;
@@ -14,40 +19,29 @@ public class Student {
         this.grade = grade;
     }
 
-    /**
-     * Validerer studentnavn
-     * @param StudentName
-     */
-
-    public void validateStudentName(String StudentName){
-        if (StudentName.isBlank() || StudentName == null){
-            throw new IllegalArgumentException("Name can`t be empty.");
-        }
-        String[] name = StudentName.split(" ");
-
-        if(name.length < 2){ 
-            throw new IllegalArgumentException("Write both first name and last name, excluding any middle names and additional last names. ");
-        }
-        
-        for (String part : name) {
-            if (!part.matches("^[ÆØÅæøåa-zA-Z]+$")) {
-                System.out.println("Ugyldig del av navnet: " + part);
-                throw new IllegalArgumentException("Studentname can only contains letters.");
-            } 
-            if (part.length() < 2) {
-                throw new IllegalArgumentException("First name and last name must be atleast two letters long.");
-            }
-        }
-    } 
+   /**
+    * Henter studentName
+    * @return studentName
+    */
 
     public String getStudentName(){
         return studentName;
     }
 
+    /**
+     * Henter karakter
+     * @return grade
+     */
+
     public char getGrade(){
         return grade;
     }
 
+    /**
+     * Henter subjectCode
+     * @return subjectCode
+     */
+    
     public String getSubjectCode(){
         return subjectCode;
     }

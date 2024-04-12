@@ -25,15 +25,14 @@ public class CalculatorProjectController {
     private TextField selectedSubjectField;
 
     private Subject subject;
- 
     private Calculator calculator;
-    private SubjectValidate subjectValidate;
+    private Validate validate;
 
     @FXML
     private void initialize(){
         subject = new Subject();
         calculator = new Calculator();
-        subjectValidate = new SubjectValidate();
+        validate = new Validate();
         
         FileHandler.loadGradesForSubjectFromFile();
 
@@ -48,17 +47,16 @@ public class CalculatorProjectController {
 
     @FXML
     private void calculate(){
-        //fileHandler.loadGradesForSubjectFromFile();
-         // Sjekk om studentnavnet er gyldig
+        
         
         try{ 
             String studentName = studentNameField.getText();
             String subjectCode = subjectCodeField.getText();
             char grade = gradeField.getText().charAt(0); 
             
-
+            if(validate.validateStudentName(studentName))
         
-            if (subjectValidate.validateSubjectCode(subjectCode) && subjectValidate.validGrade(grade)){
+            if (validate.validateSubjectCode(subjectCode) && validate.validGrade(grade)){
                 subject.addGrade(studentName, subjectCode, grade);
 
                 // Sjekk om det valgte emnet eksisterer før vi fortsetter med beregningene
@@ -69,7 +67,7 @@ public class CalculatorProjectController {
                 String selectedSubject = selectedSubjectField.getText();
                 if (selectedSubject != null && !selectedSubject.isEmpty()) {
                     
-                    List<Double> numericGrades = subjectValidate.convertGradesToNumeric(selectedSubject);
+                    List<Double> numericGrades = validate.convertGradesToNumeric(selectedSubject);
                     
                     
                     double average = calculator.calculateAverage(numericGrades);

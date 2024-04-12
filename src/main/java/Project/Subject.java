@@ -20,7 +20,6 @@ public class Subject {
  */
     public void addGrade(String studentName, String subjectCode, char grade){
        
-        //FileHandler.loadGradesForSubjectFromFile();
 
         //sjekker om studentName har lagt til grade for det spesifikke subjectCode
         for (Student existingStudent : grades){
@@ -32,7 +31,7 @@ public class Subject {
                 FileHandler.saveGradesForSubjectToFile(grades);
             }
         }
-        //personen har ikke lagt til karakter for emnet tidligere, legger til ny karakter 
+        
         Student newStudent = new Student(studentName, subjectCode, grade);
         grades.add(newStudent);
         updateGradesPerSubject(subjectCode);
@@ -46,18 +45,22 @@ public class Subject {
      * @param subjectCode
      */
     public static void updateGradesPerSubject(String subjectCode){
+
         if (grades == null){
             grades = new ArrayList<>();
         }
-        //sletter karakter for emnet fra gradesPerSubject
+        
         gradesPerSubject.remove(subjectCode);
-        //legger til oppdatert karakterer for emnet
+       
         List<Character> gradeList = new ArrayList<>();
         for (Student grade : grades){
+
             if(grade.subjectCode.equals(subjectCode)){
+
                 gradeList.add(grade.grade);
             }
         }
+        
         gradesPerSubject.put(subjectCode, gradeList);
     }
 
@@ -65,9 +68,9 @@ public class Subject {
     /**
      * Henter ut en liste med karakter for valgt emnekode. Listen heter gradesForSubject
      * @param selectedSubject
-     * @return
+     * @return gradesForSubejct
     */
-    public static List<Character> getGradesForSubject(String selectedSubject){
+    public List<Character> getGradesForSubject(String selectedSubject){
     
         List<Character> gradesForSubject = gradesPerSubject.get(selectedSubject);
 
