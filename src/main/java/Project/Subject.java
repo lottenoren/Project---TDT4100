@@ -19,26 +19,33 @@ public class Subject {
  * @param grade
  */
     public void addGrade(String studentName, String subjectCode, char grade){
-       
-
-        //sjekker om studentName har lagt til grade for det spesifikke subjectCode
+        loadGradesFromFile();
+        boolean studentExists = false;
+    
         for (Student existingStudent : grades){
 
-            if(existingStudent.studentName.equals(studentName) && existingStudent.subjectCode.equals(subjectCode)){
+            if (existingStudent.getStudentName().equals(studentName) && existingStudent.getSubjectCode().equals(subjectCode)){
 
-                existingStudent.grade = grade;
-                updateGradesPerSubject(subjectCode); 
-                FileHandler.saveGradesForSubjectToFile(grades);
+                existingStudent.setGrade(grade);
+                studentExists = true;
+                break;
             }
         }
+    
         
-        Student newStudent = new Student(studentName, subjectCode, grade);
-        grades.add(newStudent);
+        if (!studentExists) {
+
+            Student newStudent = new Student(studentName, subjectCode, grade);
+            grades.add(newStudent);
+        }
+    
+    
         updateGradesPerSubject(subjectCode);
         FileHandler.saveGradesForSubjectToFile(grades);
+    
         System.out.println("Added grade for subject: " + subjectCode);
-
     }
+    
 
     /**
      * Oppdaterer karakter til emnet dersom student har lagt til karakter tidligere
@@ -60,8 +67,9 @@ public class Subject {
                 gradeList.add(grade.grade);
             }
         }
-        
+
         gradesPerSubject.put(subjectCode, gradeList);
+        FileHandler.saveGradesForSubjectToFile(grades);
     }
 
     
@@ -80,6 +88,10 @@ public class Subject {
         } else {
             throw new IllegalArgumentException("Emnekoden eksisterer ikke");
         }
+    }
+
+    public static void loadGradesFromFile() {
+        grades = FileHandler.loadGradesForSubjectFromFile();
     }
 
     public List<Student> getGrades() {

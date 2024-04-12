@@ -41,9 +41,13 @@ public class Student {
      * Henter subjectCode
      * @return subjectCode
      */
-    
+
     public String getSubjectCode(){
         return subjectCode;
+    }
+
+    public void setGrade(char grade){
+        this.grade = grade;
     }
 
 }

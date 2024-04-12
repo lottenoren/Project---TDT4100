@@ -27,4 +27,6 @@
 
     <Button text="Calculate" onAction="#calculate" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
+    <Button text="Clear File" onAction="#clearFile" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+
 </GridPane>

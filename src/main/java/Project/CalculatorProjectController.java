@@ -99,13 +99,18 @@ public class CalculatorProjectController {
 
     @FXML
     private void saveToFile() {
-        subject.getGrades();
+        
     }
 
 
     @FXML
     private void saveGradesForSubjectToFile(){
         FileHandler.saveGradesForSubjectToFile(subject.getGrades());
+    }
+
+    @FXML
+    private void clearFile(){
+        FileHandler.clearFile();
     }
 
 

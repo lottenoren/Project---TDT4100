@@ -16,7 +16,7 @@ public class FileHandler{
      * Metode for å hente karakterer fra filen ved oppretting et et nytt Subject-objekt
      * 
      */
-    public static void loadGradesForSubjectFromFile() {
+    public static List<Student> loadGradesForSubjectFromFile() {
         List<Student> grades = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
@@ -32,7 +32,7 @@ public class FileHandler{
                 
                 grades.add(new Student(studentName, subjectCode, grade));
                 
-                updateGradesPerSubject(subjectCode);
+                //updateGradesPerSubject(subjectCode);
             }
             System.out.println("Grades loaded from file successfully.");
 
@@ -40,6 +40,7 @@ public class FileHandler{
 
             System.out.println("Error loading grades from file: " + e.getMessage());
         }
+        return grades;
     }
 
     /**
@@ -65,8 +66,20 @@ public class FileHandler{
     }
 
     private static void updateGradesPerSubject(String subjectCode) {
-        
+
         Subject.updateGradesPerSubject(subjectCode);
+    }
+
+    /**
+     * Metode for å tømme filen
+     */
+     public static void clearFile() {
+        try (FileWriter writer = new FileWriter(FILE_PATH, false)) {
+            writer.write(""); // Skriver en tom streng til filen, som fjerner alt innhold
+            System.out.println("File cleared successfully.");
+        } catch (IOException e) {
+            System.out.println("Error clearing file: " + e.getMessage());
+        }
     }
 
     
